@@ -84,7 +84,7 @@ fviz_nbclust(normalized_data, kmeans, method = "wss") +
 # Apply k-means clustering with 4 clusters 
 # Ensure consistent results every time you run the code  
 set.seed(123)
-kmeans_result <- kmeans(normalized_data, centers = 4, nstart = 25)
+kmeans_result <- kmeans(normalized_data, centers = 5, nstart = 25)
 
 # Add the cluster label(1 to 4) back to the original customer data     
 customer_data$cluster <- as.factor(kmeans_result$cluster)
@@ -92,6 +92,50 @@ customer_data$cluster <- as.factor(kmeans_result$cluster)
 # View the first few rows of the customer data with cluster assignment   
 
 head(customer_data)
+
+# VISUALIZING CUSTOMER SEGMENT  
+# visualize the k-mean clustering results    
+fviz_cluster(
+  kmeans_result,
+  data = normalized_data,
+  geom = "point",
+  ellipse.type = "norm",
+  palette = "jco",
+  ggtheme = theme_minimal()
+  
+)
+labs(title = "Custommer segmentation using k-mean")
+
+
+
+# PROFILING CUSTOMERS  
+
+
+# group customers by clusters and calculate average values for each segment     
+customer_data |> 
+  group_by(cluster) |> 
+  summarise(
+    average_total_quantity = mean(total_quantity),
+    average_total_spent = mean(total_spent),
+    average_unit_price = mean(average_unit_price),
+    count = n()
+  )
+
+
+# VISUALIZE AVERAGE SPENDING ACROSS CUSTOMER SEGMENTS      
+# create a bar plot showing average total spending per customer cluster      
+ggplot(
+  customer_data,
+  aes(x = cluster, y = total_spent, fill = cluster)) +
+  stat_summary(fun = mean, geom = "bar") +
+  labs(
+    title = "Average total spending per cluster",
+    y = "Average total spent"
+  ) +
+  theme_minimal()
+
+
+
 
 
 
