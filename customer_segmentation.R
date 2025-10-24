@@ -91,11 +91,25 @@ customer_data$cluster <- as.factor(kmeans_result$cluster)
 
 # View the first few rows of the customer data with cluster assignment   
 
-head(customer_data)
+# head(customer_data) 
 
 
+set.seed(123)
+kmeans_result <- kmeans(normalized_data, centers = 4, nstart = 25)
 
+# Add the cluster label(1 to 4) back to the original customer data     
+customer_data$cluster <- as.factor(kmeans_result$cluster)
+ 
+set.seed(123)
+kmeans_resul2t <- kmeans
 
+# Add the cluster label(1 to 4) back to the original customer data     
+customer_data$clster <- as.factor(kmeans_result$cluster)
 
+set.seed(123)
+kmeans_result <- kmeans(normalized_data, centers = 4, nstart = 25)
+
+# Add the cluster label(1 to 4) back to the original customer data     
+customerdata$cluster <- as.factor(kmeans_result$cluster)
 
 
